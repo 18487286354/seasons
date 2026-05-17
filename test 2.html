@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>✨ 星运之镜 · 折叠模块</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a0c1a 0%, #141a2e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+            padding: 24px;
+            position: relative;
+        }
+
+        /* 触发按钮 —— 纯白风格，只有星座图标 */
+        .trigger-btn {
+            background: white;
+            border: none;
+            border-radius: 60px;
+            padding: 14px 28px;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #2c2a4a;
+            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.02) inset;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            z-index: 10;
+            backdrop-filter: blur(0px);
+            line-height: 1;
+        }
+        .trigger-btn:hover {
+            transform: scale(0.96);
+            background: #fef9ef;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+        }
+        .trigger-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* 主卡片容器 — 紧凑高级玻璃质感 */
+        .horoscope-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.96);
+            width: 90%;
+            max-width: 520px;
+            background: rgba(18, 22, 45, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 44px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 45px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255, 215, 150, 0.3) inset;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0.28s, transform 0.28s ease;
+            z-index: 1000;
+            transform-origin: center;
+        }
+
+        .horoscope-card.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* 头部区域 — 紧凑微调 */
+        .header {
+            padding: 14px 18px 8px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 1.45rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF5E6, #F5D98C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .title i {
+            font-size: 1.5rem;
+            background: none;
+            color: #f9d571;
+        }
+
+        /* 关闭按钮 */
+        .close-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 40px;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #FFE6C7;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 200, 120, 0.3);
+        }
+        .close-card:hover {
+            background: rgba(255, 100, 100, 0.4);
+            transform: scale(0.92);
+            border-color: #ffaa77;
+        }
+
+        /* 刷新 + 星座选择器紧凑 */
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 6px 0;
+            flex-wrap: wrap;
+        }
+        .zodiac-select {
+            flex: 2;
+            background: rgba(8, 12, 26, 0.7);
+            border: 1px solid rgba(255, 215, 170, 0.5);
+            border-radius: 44px;
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #FFEFCF;
+            font-family: inherit;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23f5d98c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 14px;
+        }
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 150, 0.4);
+            border-radius: 44px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #F3E9D2;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .refresh-btn:hover {
+            background: rgba(255, 220, 150, 0.25);
+            transform: scale(0.96);
+        }
+
+        .date-badge {
+            margin-top: 8px;
+            margin-bottom: 2px;
+            font-size: 0.65rem;
+            color: #B1C0F0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 12px;
+            border-radius: 30px;
+            width: fit-content;
+        }
+
+        /* 动态内容区 */
+        .content {
+            padding: 12px 18px 20px 18px;
+        }
+
+        .status-area {
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+            padding: 20px 12px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 215, 150, 0.2);
+            border-top: 3px solid #FFD966;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-message {
+            background: rgba(255, 80, 100, 0.2);
+            border-radius: 28px;
+            padding: 16px;
+            border: 1px solid rgba(255, 120, 120, 0.5);
+            color: #FFCFC0;
+            font-size: 0.8rem;
+        }
+        .retry-btn {
+            background: #FFD966;
+            border: none;
+            margin-top: 12px;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #1a1f2f;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        /* 运势详情 — 紧凑且今日星语更丰富 */
+        .horoscope-detail {
+            animation: fadeSlideUp 0.3s ease;
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(6px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .description-box {
+            background: rgba(255, 247, 225, 0.08);
+            padding: 14px 16px;
+            border-radius: 30px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 215, 150, 0.25);
+        }
+        .desc-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            background: #ffd96630;
+            padding: 3px 10px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 8px;
+            color: #FFE3A3;
+            letter-spacing: 1px;
+        }
+        .desc-text {
+            font-size: 0.85rem;
+            line-height: 1.55;
+            color: #FDF4E3;
+            font-weight: 450;
+        }
+
+        /* 紧凑网格 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .info-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 22px;
+            padding: 7px 10px;
+            border: 1px solid rgba(255, 205, 130, 0.2);
+        }
+        .info-label {
+            font-size: 0.55rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #BAC3F0;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .info-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #FFE9C4;
+        }
+        .small-value { font-size: 0.75rem; font-weight: 500; }
+
+        .footer-note {
+            margin-top: 4px;
+            padding: 8px 18px 14px 18px;
+            text-align: center;
+            font-size: 0.55rem;
+            color: #7783af;
+            border-top: 1px solid rgba(255,255,240,0.07);
+        }
+
+        /* 遮罩层 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.25s;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 500px) {
+            .horoscope-card { width: 92%; border-radius: 38px; }
+            .content { padding: 10px 14px 18px; }
+            .info-grid { gap: 6px; }
+            .desc-text { font-size: 0.8rem; }
+            .trigger-btn { padding: 12px 24px; font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 触发按钮：纯星座符号 + ✨，无中文，整体白色背景深色图标 -->
+<button class="trigger-btn" id="openHoroscopeBtn" aria-label="打开星座运势模块">
+    <span>♈✨</span>
+</button>
+
+<!-- 遮罩层 (点击关闭) -->
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<!-- 运势模块卡片 -->
+<div class="horoscope-card" id="horoscopeCard">
+    <div class="header">
+        <div class="title-section">
+            <div class="title">
+                <i>🌟</i> 星运之境
+            </div>
+            <button class="close-card" id="closeCardBtn" aria-label="关闭">✕</button>
+        </div>
+        <div class="action-row">
+            <select id="zodiacSelect" class="zodiac-select">
+                <option value="aries">♈ 白羊座</option>
+                <option value="taurus">♉ 金牛座</option>
+                <option value="gemini">♊ 双子座</option>
+                <option value="cancer">♋ 巨蟹座</option>
+                <option value="leo">♌ 狮子座</option>
+                <option value="virgo">♍ 处女座</option>
+                <option value="libra">♎ 天秤座</option>
+                <option value="scorpio">♏ 天蝎座</option>
+                <option value="sagittarius">♐ 射手座</option>
+                <option value="capricorn">♑ 摩羯座</option>
+                <option value="aquarius">♒ 水瓶座</option>
+                <option value="pisces">♓ 双鱼座</option>
+            </select>
+            <button class="refresh-btn" id="refreshBtn">🔄 刷新</button>
+        </div>
+        <div class="date-badge">
+            <span>📅</span> <span id="formattedDate">加载星历</span>
+        </div>
+    </div>
+    <div class="content" id="dynamicContent">
+        <!-- 动态内容会在此渲染 -->
+        <div class="status-area">
+            <div class="spinner"></div>
+            <div style="color:#CFD5F0; font-size:0.8rem;">✨ 星轨准备就绪，开启运势之镜</div>
+        </div>
+    </div>
+    <div class="footer-note">
+        🌙 星语丰盈 · 每日深度指引
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ----- 星座名称映射 -----
+        const zodiacMap = {
+            aries: "白羊座", taurus: "金牛座", gemini: "双子座", cancer: "巨蟹座",
+            leo: "狮子座", virgo: "处女座", libra: "天秤座", scorpio: "天蝎座",
+            sagittarius: "射手座", capricorn: "摩羯座", aquarius: "水瓶座", pisces: "双鱼座"
+        };
+
+        // DOM 元素
+        const openBtn = document.getElementById('openHoroscopeBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const card = document.getElementById('horoscopeCard');
+        const closeCardBtn = document.getElementById('closeCardBtn');
+        const selectEl = document.getElementById('zodiacSelect');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const dynamicContainer = document.getElementById('dynamicContent');
+        const displayDateSpan = document.getElementById('formattedDate');
+        
+        let currentRequestSign = null;
+        let isCardVisible = false;
+
+        // ------------------- 控制卡片显示/隐藏 -----------------
+        function showCard() {
+            if (!isCardVisible) {
+                card.classList.add('show');
+                modalOverlay.classList.add('show');
+                isCardVisible = true;
+                // 每次打开时刷新当前星座运势，确保数据新鲜 & 丰富文案
+                const currentSign = getCurrentSign();
+                fetchHoroscopeForSign(currentSign, true);
+            }
+        }
+
+        function hideCard() {
+            if (isCardVisible) {
+                card.classList.remove('show');
+                modalOverlay.classList.remove('show');
+                isCardVisible = false;
+            }
+        }
+
+        modalOverlay.addEventListener('click', hideCard);
+        closeCardBtn.addEventListener('click', hideCard);
+        openBtn.addEventListener('click', showCard);
+
+        function getCurrentSign() {
+            return selectEl.value;
+        }
+
+        // ------------------- 让今日星语更丰富 (核心增强) -----------------
+        function enrichDescription(originalDesc, signKey) {
+            if (!originalDesc) originalDesc = "星辰低语，今日的能量环绕着你。";
+            const signWisdom = {
+                aries: "🔥 火星赋予你直前的勇气，但别忽略停下来感受内心的节奏。",
+                taurus: "🌿 金星滋养着你的稳定感，今天适合用五感去体验美好事物。",
+                gemini: "💬 水星之风带来交流天赋，多分享灵感会有意想不到的共鸣。",
+                cancer: "🌙 月亮的潮汐影响情绪，允许自己柔软，守护你的安全感。",
+                leo: "☀️ 太阳之光照耀你，慷慨和创造力是你今日的幸运钥匙。",
+                virgo: "📝 水星为理性加冕，细节里藏着机会，也要照顾身体的小情绪。",
+                libra: "⚖️ 金星调和关系，美丽与平衡围绕你，任何决定听从本心。",
+                scorpio: "🦂 冥王星赐予深度洞察，放下执念反而收获蜕变的力量。",
+                sagittarius: "🏹 木星扩张你的视野，勇敢追寻真理，远方的灵感会降临。",
+                capricorn: "🗻 土星之韧，每一步积累都算数，别忘记仰望星空放松紧绷。",
+                aquarius: "🌀 天王星带来革新能量，独特才是你的超能力，打破常规吧。",
+                pisces: "🌊 海王星织梦，你的直觉异常敏锐，艺术或冥想治愈心灵。"
+            };
+            const extra = signWisdom[signKey] || "✨ 星辰祝福：今天你比想象中更闪耀，保持开放的心态。";
+            const poeticLines = [
+                "🌟 星象提示：傍晚月光与木星调和，适合许下心愿。",
+                "🍃 宇宙微风：你的情绪能量正被金星温柔拥抱。",
+                "🌌 银河回响：信任内在直觉，今天会有微小而确切的幸运。",
+                "🎐 星轨轻语：与亲近的人分享此刻感受，会获得意外支持。",
+                "💫 星际低语：你所关心的某件事正在向明亮的方向流动。"
+            ];
+            const randomPoetic = poeticLines[Math.floor(Math.random() * poeticLines.length)];
+            const finalDesc = `${originalDesc}  ${extra}  ${randomPoetic}`;
+            return finalDesc;
+        }
+
+        // ------------------- 渲染运势 (增强后的描述) -----------------
+        function renderHoroscopeData(data, signKey) {
+            let rawDesc = data.description || "今日星辰与你共振，每一步都藏着惊喜。";
+            const richDescription = enrichDescription(rawDesc, signKey);
+            
+            const luckyNumber = data.lucky_number ?? (Math.floor(Math.random()*9)+1);
+            const luckyColor = data.color || "琥珀金";
+            const luckyTime = data.lucky_time || "灵性时刻 17:00-19:00";
+            const compatibility = data.compatibility || "共鸣星座";
+            let mood = data.mood || "温和微光";
+            const luckyStone = data.lucky_stone || "月光石";
+            const dateRange = data.date_range || "星图周期";
+            const currentDate = data.current_date || new Date().toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' });
+            
+            const moodMap = ["轻盈✨", "沉静🌙", "灵动🍃", "热情☀️", "丰盈🌼"];
+            if(!data.mood) mood = moodMap[Math.floor(Math.random()*moodMap.length)];
+            
+            displayDateSpan.innerText = currentDate;
+            
+            const html = `
+                <div class="horoscope-detail">
+                    <div class="description-box">
+                        <div class="desc-label">🔮 今日星语 · 深度指引</div>
+                        <div class="desc-text">${escapeHtml(richDescription)}</div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item"><div class="info-label">🔢 幸运数字</div><div class="info-value">${escapeHtml(String(luckyNumber))}</div></div>
+                        <div class="info-item"><div class="info-label">🎨 幸运颜色</div><div class="info-value">${escapeHtml(luckyColor)}</div></div>
+                        <div class="info-item"><div class="info-label">⏳ 幸运时刻</div><div class="info-value small-value">${escapeHtml(luckyTime)}</div></div>
+                        <div class="info-item"><div class="info-label">💎 幸运宝石</div><div class="info-value small-value">${escapeHtml(luckyStone)}</div></div>
+                        <div class="info-item"><div class="info-label">❤️ 速配星座</div><div class="info-value small-value">${escapeHtml(compatibility)}</div></div>
+                        <div class="info-item"><div class="info-label">🌙 情绪磁场</div><div class="info-value small-value">${escapeHtml(mood)}</div></div>
+                        <div class="info-item"><div class="info-label">📆 星座区间</div><div class="info-value small-value">${escapeHtml(dateRange)}</div></div>
+                        <div class="info-item"><div class="info-label">✨ 星辰印记</div><div class="info-value small-value">${escapeHtml(zodiacMap[signKey] || signKey)} · 今日开运</div></div>
+                    </div>
+                </div>
+            `;
+            dynamicContainer.innerHTML = html;
+        }
+
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if(m === '&') return '&amp;';
+                if(m === '<') return '&lt;';
+                if(m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        function showLoadingState() {
+            dynamicContainer.innerHTML = `
+                <div class="status-area">
+                    <div class="spinner"></div>
+                    <div style="color:#CFD5F0; font-size:0.8rem;">✨ 感应星盘，萃取深度运势...</div>
+                </div>
+            `;
+        }
+        
+        function showErrorState(message, signKey) {
+            dynamicContainer.innerHTML = `
+                <div class="status-area">
+                    <div class="error-message">
+                        <div style="font-size:0.9rem; margin-bottom:5px;">🌙 星雾弥漫</div>
+                        <div style="font-size:0.7rem;">${escapeHtml(message)}</div>
+                        <button class="retry-btn" id="errorRetryBtn">✨ 再次占星</button>
+                    </div>
+                </div>
+            `;
+            const retry = document.getElementById('errorRetryBtn');
+            if(retry) retry.addEventListener('click', () => fetchHoroscopeForSign(signKey, true));
+        }
+        
+        async function fetchHoroscopeFromAPI(signKey) {
+            const sign = signKey.toLowerCase();
+            const url = `https://aztro.sameerkumar.website/?sign=${sign}&day=today`;
+            const resp = await fetch(url, { method: 'POST', headers: { 'Accept': 'application/json' } });
+            if(!resp.ok) throw new Error(`API异常 ${resp.status}`);
+            const data = await resp.json();
+            if(!data || !data.description) throw new Error('无效数据');
+            return data;
+        }
+        
+        function getFallbackData(signKey) {
+            const richFallbackDescs = [
+                "月光与木星共振，今日你会感受到内在力量的涌动。任何挑战背后都藏着成长的礼物。",
+                "水星的风带来灵感，适合记录梦境或突然闪现的创意。傍晚社交运势上升，愉快的交流将点亮心情。",
+                "金星缓缓移动，你的魅力指数升高，表达温柔便能收获善意。留意身边的小确幸。",
+                "火星点燃行动力，但别让急躁掩盖了真心。放慢半拍，反而更容易抓住机会。",
+                "土星给予耐心，今天适合深耕某一项技能，夜晚会有豁然开朗的领悟。"
+            ];
+            const descIndex = Math.floor(Math.random() * richFallbackDescs.length);
+            return {
+                description: richFallbackDescs[descIndex] + " (离线星图·灵性不减)",
+                lucky_number: Math.floor(Math.random() * 9) + 1,
+                color: ["琥珀金", "星尘紫", "暮光蓝", "蔷薇粉"][Math.floor(Math.random()*4)],
+                lucky_time: "黄昏 · 17:00 - 19:00",
+                compatibility: zodiacMap[signKey] === "白羊座" ? "狮子座" : (zodiacMap[signKey] === "金牛座" ? "处女座" : "天秤座"),
+                mood: "宁静致远",
+                lucky_stone: "月光石 / 天河石",
+                date_range: "星轨周期",
+                current_date: new Date().toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' })
+            };
+        }
+        
+        async function fetchHoroscopeForSign(signKey, forceRefresh = true) {
+            const thisReq = signKey;
+            currentRequestSign = thisReq;
+            showLoadingState();
+            if(displayDateSpan.innerText.includes('加载') || displayDateSpan.innerText.includes('星历')) {
+                displayDateSpan.innerText = "✨ 星轨计算中...";
+            }
+            try {
+                let apiData = null;
+                let usedApi = true;
+                try {
+                    apiData = await fetchHoroscopeFromAPI(signKey);
+                } catch(apiErr) {
+                    console.warn("API调用失败，启用备用库");
+                    usedApi = false;
+                    apiData = getFallbackData(signKey);
+                }
+                if (currentRequestSign !== getCurrentSign()) return;
+                if(!apiData.current_date) {
+                    apiData.current_date = new Date().toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' });
+                }
+                renderHoroscopeData(apiData, signKey);
+            } catch(err) {
+                if (currentRequestSign !== getCurrentSign()) return;
+                showErrorState(err.message || "星图信号微弱", signKey);
+                displayDateSpan.innerText = "🌙 星轨待连接";
+            }
+        }
+        
+        function refreshCurrent() {
+            const sign = getCurrentSign();
+            if(sign) fetchHoroscopeForSign(sign, true);
+        }
+        
+        selectEl.addEventListener('change', () => {
+            refreshCurrent();
+        });
+        refreshBtn.addEventListener('click', refreshCurrent);
+        
+        function setDefaultDate() {
+            const today = new Date();
+            displayDateSpan.innerText = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日`;
+        }
+        setDefaultDate();
+        card.classList.remove('show');
+        modalOverlay.classList.remove('show');
+        isCardVisible = false;
+    })();
+</script>
+</body>
+</html>

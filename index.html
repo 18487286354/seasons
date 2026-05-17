@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>阿葉步未的个人网页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="2.0/css/Seasons.css">
+    <link rel="stylesheet" href="2.0/css/Patch.css">
+    <link rel="stylesheet" href="2.0/css/Weather.css">
+</head>
+<body onmousemove="onmove(event)">
+    <!-- 浮动元素保持不变 -->
+    <div id="hl" onmousedown="ondown()" onmouseup="onup()" style="right:38%; top:7%;z-index: 2;" title="sin(90°)+ 4 等于多少呢？">
+        <img src="assets/images/e62b0cba17edb9678ab08efcbe2d64ba1620520.gif@700w_748h.webp" alt="" style="width: 100px;" id="btn">
+    </div>
+    <div id="div1" onclick="openPage('.html')"><img src="assets/images/67613352b050c35948ae3b3f3fff4cde1620520.gif@700w_654h.webp" alt="" style="width: 100px;" id="btn" title="肚子好饿~但是我们要找到最后一个同伴"></div>
+    <div id="div2" onclick="openPage('Interface 2.html')"><img src="assets/images/9ad8c9746d0a755965638c33674b286d1620520.gif@800w_702h.webp" alt="" style="width: 100px;" id="btn" title="还有个伙伴去哪了？"></div>
+    <div id="div3" onclick="openPage('.html')"><img src="assets/images/5cf330d3c961c835059c08154062ce761620520.gif@600w_528h.webp" alt="" style="width: 100px;" id="btn" title="对呀！我们总共是五个的"></div>
+    <div id="div4" onclick="openPage('Interface 1.html')"><img src="assets/images/43f6c351899cd47a0415cb7b4ea9608e1620520.gif@744w_684h.webp" alt="" style="width: 100px;" id="btn" title="你们终于找到我啦！"></div>
+
+    <nav>
+        <a href="#" id="home" class="active">首页</a>
+        <a href="#" id="about">春之花</a>
+        <a href="#" id="cs1">夏之夜</a>
+        <a href="#" id="cs2">秋之歌</a>
+        <a href="#" id="cs3">冬之雪</a>
+        <img src="assets/images/svg/play.svg" id="music" alt="music" />
+        <img src="assets/images/svg/sun.svg" id="darkMode" alt="darkMode" />
+    </nav>
+
+    <main class="scrollbar">
+        <!-- 首页 -->
+        <section title="home">
+            <img src="assets/images/bg2.jpg" id="bg" alt="背景" />
+            <img src="assets/images/touxiang.jpg" class="avatar" title="oi 干什么 小鬼" onclick="alert('戳我干嘛￣へ￣')" />
+            <div class="info">
+                <h2 title="">阿葉步未</h2>
+                <h4 title="">明年，夏天依旧如约而至</h4>
+            </div>
+            <div id="link"></div>
+        </section>
+
+        <!-- 春之花 -->
+        <section title="about">
+            <div class="item">
+                <h3># 想</h3>
+                <div id="game">
+                    <p style="text-align: center">我不打算做谁的附庸</p>
+                    <p style="text-align: center">也不是某段的支流河</p>
+                    <p style="text-align: center">比起这些</p>
+                    <p style="text-align: center">我更想成为顷刻间的滂沱</p>
+                    <p style="text-align: center">旷野里乍起的风波</p>
+                    <p style="text-align: center">又或是</p>
+                    <p style="text-align: center">唐朝遗风外悬着的唯一月色</p>
+                    <p style="text-align: center">人生本就是一首待写的诗歌</p>
+                    <p style="text-align: center">而他们的文字浅薄</p>
+                    <p style="text-align: center">不该被潦草的印刷着</p>
+                    <p style="text-align: center">所以在我的笔下</p>
+                    <p style="text-align: center">一重山有一重山的错落</p>
+                    <p style="text-align: center">我也有我的平仄</p>
+                </div>
+            </div>
+            <br>
+            <div class="item">
+                <h3># 告诉我吧</h3>
+                <div class="social-container" data-section="spring"></div><!-- 社交按钮集成管理 -->
+            </div>
+        </section>
+
+        <!-- 夏之夜 -->
+        <section title="cs1">
+            <div class="item">
+                <h3># 迹</h3>
+                <div id="game">
+                    <div>
+                        <p style="text-align: center">我非谁的影子</p>
+                        <p style="text-align: center">亦非某片浮云下的残叶</p>
+                        <p style="text-align: center">比起这些</p>
+                        <p style="text-align: center">我更愿成为一阵自在的风</p>
+                        <p style="text-align: center">掠过山丘</p>
+                        <p style="text-align: center">又或是拂过花海的那抹轻盈</p>
+                        <p style="text-align: center">人生本就是一幅浓墨重彩的画卷</p>
+                        <p style="text-align: center">而他们的笔触浅显</p>
+                        <p style="text-align: center">不该被草率的涂抹着</p>
+                        <p style="text-align: center">所以在我心中</p>
+                        <p style="text-align: center">一风景有一风景的独韵</p>
+                        <p style="text-align: center">我有我的炽烈</p>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <br>
+            <div class="item">
+                <h3># 告诉我吧</h3>
+                <div class="social-container" data-section="autumn"></div>
+            </div>
+        </section>
+        <!-- 秋之歌 -->
+        <section title="cs2">
+            <div class="item">
+                <h3># 迹</h3>
+                <div id="game">
+                    <div>
+                        <p style="text-align: center">我非谁的影子</p>
+                        <p style="text-align: center">亦非某片浮云下的残叶</p>
+                        <p style="text-align: center">比起这些</p>
+                        <p style="text-align: center">我更愿成为一阵自在的风</p>
+                        <p style="text-align: center">掠过山丘</p>
+                        <p style="text-align: center">又或是拂过花海的那抹轻盈</p>
+                        <p style="text-align: center">人生本就是一幅浓墨重彩的画卷</p>
+                        <p style="text-align: center">而他们的笔触浅显</p>
+                        <p style="text-align: center">不该被草率的涂抹着</p>
+                        <p style="text-align: center">所以在我心中</p>
+                        <p style="text-align: center">一风景有一风景的独韵</p>
+                        <p style="text-align: center">我有我的炽烈</p>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <br>
+            <div class="item">
+                <h3># 告诉我吧</h3>
+                <div class="social-container" data-section="autumn"></div>
+            </div>
+        </section>
+
+        <!-- 冬之雪 -->
+        <section title="cs3">
+            <div class="item">
+                <h3># 断</h3>
+                <div id="game">
+                    <div>
+                        <p style="text-align: center">我非谁的倒影</p>
+                        <p style="text-align: center">亦非长河中随波逐流的浮萍</p>
+                        <p style="text-align: center">比起这些</p>
+                        <p style="text-align: center">我更想成为一束落落寡合的光线</p>
+                        <p style="text-align: center">穿过黑暗</p>
+                        <p style="text-align: center">又或是照亮长空的那抹璀璨</p>
+                        <p style="text-align: center">人生本就是一段未知的旅程</p>
+                        <p style="text-align: center">而他们的脚步踌躇</p>
+                        <p style="text-align: center">不该被随意的践踏着</p>
+                        <p style="text-align: center">所以在我眼中</p>
+                        <p style="text-align: center">一步履有一步履的坚定</p>
+                        <p style="text-align: center">我有我的执着</p>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <br>
+            <div class="item">
+                <h3># 告诉我吧</h3>
+                <div class="social-container" data-section="winter"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部运行时间 -->
+    <footer>
+        <span id="span"></span>
+    </footer>
+
+    <!-- 音乐模块 -->
+    <audio preload="load" id="music" loop="loop">
+        <source src="assets/music/爱在不远处 - 李巍V仔.mp3" />
+    </audio>
+
+    <!-- 天气组件 -->
+    <button class="weather-btn" id="weatherBtn" title="查看天气">☁️</button>
+    <div class="weather-widget" id="weatherWidget">
+        <button class="close-panel-btn" id="closePanelBtn" title="关闭面板">✕</button>
+        <div class="main-weather-row">
+            <div class="weather-icon-main" id="weatherIcon">✨</div>
+            <div class="temp" id="temperature">--°</div>
+        </div>
+        <div class="weather-desc" id="weatherDesc">准备获取天气</div>
+        <div class="location" id="locationText">📍 定位中...</div>
+        <div class="divider"></div>
+        <div class="metrics-grid">
+            <div class="metric-card"><div class="metric-label">湿度</div><div class="metric-value" id="humidity">--%</div></div>
+            <div class="metric-card"><div class="metric-label">风速</div><div class="metric-value" id="wind">--km/h</div></div>
+            <div class="metric-card"><div class="metric-label">气压</div><div class="metric-value" id="pressure">--hPa</div></div>
+            <div class="metric-card"><div class="metric-label">体感</div><div class="metric-value" id="feelsLike">--°</div></div>
+            <div class="metric-card"><div class="metric-label">降水</div><div class="metric-value" id="precipProb">--mm</div></div>
+            <div class="metric-card"><div class="metric-label">紫外线</div><div class="metric-value" id="uvIndex">--</div></div>
+        </div>
+        <div class="life-advice-container" id="lifeAdviceContainer">
+            <div class="life-advice-scroll" id="lifeAdviceText">✨ 加载建议中...</div>
+        </div>
+        <div class="forecast-section">
+            <div class="forecast-title">📅 未来三天天气</div>
+            <div class="forecast-cards" id="forecastContainer">
+                <div class="forecast-day">--</div>
+                <div class="forecast-day">--</div>
+                <div class="forecast-day">--</div>
+            </div>
+        </div>
+        <div class="footer-info">
+            <div class="sun-info" id="sunInfo">
+                <span>🌅 日出 <strong id="sunriseTime">--:--</strong></span>
+                <span>🌇 日落 <strong id="sunsetTime">--:--</strong></span>
+            </div>
+            <div class="update-time" id="updateTime">⏳ 等待更新</div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+            <button class="retry-btn" id="retryWeatherBtn" style="display: none;">🔄 重试</button>
+        </div>
+    </div>
+
+    <!-- 花瓣背景 -->
+    <div id="jsi-cherry-container" class="container"></div>
+
+    <!-- 外链JS保持不变 -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="2.0/js/Seasons.js"></script>
+    <script src="2.0/js/Petal.js"></script>
+    <script src="2.0/js/Click.js"></script>
+    <script src="2.0/js/XiaoBa.js"></script>
+    <script src="2.0/js/Hide.js"></script>
+    <script src="2.0/js/Weather.js"></script>
+    <script src="2.0/js/Pop-up Window.js"></script>
+    <script src="2.0/js/Running Time.js"></script>
+    <script src="2.0/js/Social Button.js"></script>
+</body>
+</html>
