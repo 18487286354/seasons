@@ -1,0 +1,77 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #myVideo {
+            width: 80%;
+            border-radius: 25px;
+            display: block;
+            margin: 10vh auto 0;
+        }
+
+        /* 大字 + 过渡动画 */
+        .tip {
+            position: fixed;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -50%) scale(0.5);
+            font-size: 90px;
+            font-weight: bold;
+            color: red;
+            opacity: 0;
+            pointer-events: none;
+            text-align: center;
+            transition: all 0.8s ease;
+        }
+
+        .tip.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #replayBtn {
+            position: fixed;
+            left: 50%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px;
+            font-size: 20px;
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* 新增：临时提示框样式（弹出"哟，还是个m"） */
+        .toast-message {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            color: #ffdd99;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 1rem 2rem;
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 200, 100, 0.5);
+            white-space: nowrap;
+            z-index: 2000;
+            font-family: system-ui, 'Segoe UI', monospace;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            animation: fadeInOut 2s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); visibility: hidden; }
+        }
